@@ -1,16 +1,26 @@
 import { Card, CardContent } from "@/components/ui/card";
 import FileUploader from "@/components/FileUploader";
 import FolderList from "@/components/FolderList";
+import { useState } from "react";
 
 export default function Home() {
+  const [logoError, setLogoError] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-[#EB2D2E] text-white p-8 space-y-4">
-        <img 
-          src="/Logo_AAAJ-Basquet-01.png" 
-          alt="AAAJ Basquet Logo" 
-          className="h-32 mx-auto"
-        />
+        {!logoError ? (
+          <img 
+            src="/Logo_AAAJ-Basquet-01.png" 
+            alt="AAAJ Basquet Logo" 
+            className="h-32 w-auto mx-auto object-contain"
+            onError={() => setLogoError(true)}
+          />
+        ) : (
+          <div className="h-32 flex items-center justify-center">
+            <span className="text-2xl font-bold">AAAJ BASQUET</span>
+          </div>
+        )}
         <h1 className="text-4xl font-bold text-center">AAAJ Basquet Fotos</h1>
         <p className="text-center text-white/90">
           Arrastra y suelta tus fotos y videos o selecciónalos desde tu dispositivo
