@@ -13,9 +13,9 @@ export default function FolderList() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[...Array(6)].map((_, i) => (
-          <Card key={i}>
+          <Card key={i} className="border-[#1B3C84]/10">
             <CardContent className="p-6">
-              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full bg-[#1B3C84]/5" />
             </CardContent>
           </Card>
         ))}
@@ -25,8 +25,8 @@ export default function FolderList() {
 
   if (!folders?.length) {
     return (
-      <Card>
-        <CardContent className="p-6 text-center text-muted-foreground">
+      <Card className="border-[#1B3C84]/10">
+        <CardContent className="p-6 text-center text-[#1B3C84]/70">
           No hay carpetas disponibles
         </CardContent>
       </Card>
@@ -36,10 +36,10 @@ export default function FolderList() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {folders.map((folder) => (
-        <Card key={folder.id}>
+        <Card key={folder.id} className="border-[#1B3C84]/10 hover:border-[#E31B23]/20 transition-colors">
           <CardContent className="p-6 flex items-center gap-3">
-            <Folder className="h-8 w-8 text-primary" />
-            <span className="font-medium">{folder.name}</span>
+            <Folder className="h-8 w-8 text-[#E31B23]" />
+            <span className="font-medium text-[#1B3C84]">{folder.name}</span>
           </CardContent>
         </Card>
       ))}
