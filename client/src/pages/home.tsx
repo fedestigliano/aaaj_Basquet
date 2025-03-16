@@ -4,31 +4,37 @@ import FolderList from "@/components/FolderList";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f8f9fa] p-6 space-y-8">
-      <header className="text-center space-y-4">
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-[#E31B23] text-white p-8 space-y-4">
         <img 
           src="/Logo_AAAJ-Basquet-01.png" 
           alt="AAAJ Basquet Logo" 
           className="h-32 mx-auto"
         />
-        <h1 className="text-4xl font-bold text-[#E31B23] mb-2">AAAJ Basquet Fotos</h1>
-        <p className="text-[#1B3C84]">
+        <h1 className="text-4xl font-bold text-center">AAAJ Basquet Fotos</h1>
+        <p className="text-center text-white/90">
           Arrastra y suelta tus fotos y videos o selecciónalos desde tu dispositivo
         </p>
       </header>
 
-      <main className="max-w-4xl mx-auto space-y-8">
-        <Card className="border-2 border-[#E31B23]/10">
-          <CardContent className="p-6">
-            <FileUploader />
-          </CardContent>
-        </Card>
+      <main className="flex-1">
+        <section className="bg-white py-12">
+          <div className="max-w-4xl mx-auto px-6">
+            <Card className="border-2 border-[#E31B23]/10">
+              <CardContent className="p-6">
+                <FileUploader />
+              </CardContent>
+            </Card>
+          </div>
+        </section>
 
-        <section>
-          <h2 className="text-2xl font-semibold mb-4 text-center text-[#1B3C84]">
-            Todas las fotos de los bichitos
-          </h2>
-          <FolderList />
+        <section className="bg-[#1B3C84] py-12">
+          <div className="max-w-4xl mx-auto px-6">
+            <h2 className="text-2xl font-semibold mb-6 text-center text-white">
+              Todas las fotos
+            </h2>
+            <FolderList />
+          </div>
         </section>
       </main>
     </div>
