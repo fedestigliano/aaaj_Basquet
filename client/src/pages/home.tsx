@@ -22,9 +22,6 @@ export default function Home() {
           </div>
         )}
         <h1 className="text-4xl font-bold text-center">AAAJ Basquet Fotos</h1>
-        <p className="text-center text-white/90">
-          Arrastra y suelta tus fotos y videos o selecciónalos desde tu dispositivo
-        </p>
       </header>
 
       <main className="flex-1">
