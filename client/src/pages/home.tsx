@@ -5,7 +5,7 @@ import FolderList from "@/components/FolderList";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-[#E31B23] text-white p-8 space-y-4">
+      <header className="bg-[#EB2D2E] text-white p-8 space-y-4">
         <img 
           src="/Logo_AAAJ-Basquet-01.png" 
           alt="AAAJ Basquet Logo" 
@@ -20,7 +20,7 @@ export default function Home() {
       <main className="flex-1">
         <section className="bg-white py-12">
           <div className="max-w-4xl mx-auto px-6">
-            <Card className="border-2 border-[#E31B23]/10">
+            <Card className="border-2 border-[#EB2D2E]/10">
               <CardContent className="p-6">
                 <FileUploader />
               </CardContent>
@@ -28,7 +28,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-[#1B3C84] py-12">
+        <section className="bg-[#005DA3] py-12">
           <div className="max-w-4xl mx-auto px-6">
             <h2 className="text-2xl font-semibold mb-6 text-center text-white">
               Todas las fotos
