@@ -8,16 +8,39 @@ import { insertFileSchema, insertFolderSchema } from "@shared/schema";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    scopes: ['https://www.googleapis.com/auth/drive.file'],
-  });
+  // Check for required environment variables
+  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    console.error("Error: GOOGLE_APPLICATION_CREDENTIALS environment variable is not set");
+    console.error("Please create a .env file with your Google service account credentials path");
+  }
 
-  const drive = google.drive({ version: 'v3', auth });
+  if (!process.env.GOOGLE_DRIVE_FOLDER_ID) {
+    console.error("Error: GOOGLE_DRIVE_FOLDER_ID environment variable is not set");
+    console.error("Please add your Google Drive folder ID to the .env file");
+  }
+
+  let auth, drive;
+  
+  try {
+    auth = new google.auth.GoogleAuth({
+      keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
+    });
+
+    drive = google.drive({ version: 'v3', auth });
+  } catch (error) {
+    console.error("Error initializing Google Drive API:", error);
+    console.error("Please check your Google credentials configuration");
+  }
+
   const parentFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
   app.post('/api/files', upload.single('file'), async (req, res) => {
     try {
+      if (!drive) {
+        return res.status(500).json({ message: "Google Drive API no está configurado correctamente" });
+      }
+
       if (!req.file) {
         return res.status(400).json({ message: "No se ha enviado ningún archivo" });
       }
@@ -54,6 +77,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/folders', async (_req, res) => {
     try {
+      if (!drive) {
+        return res.status(500).json({ message: "Google Drive API no está configurado correctamente" });
+      }
+
       const response = await drive.files.list({
         q: `'${parentFolderId}' in parents and mimeType='application/vnd.google-apps.folder'`,
         fields: 'files(id, name)',
