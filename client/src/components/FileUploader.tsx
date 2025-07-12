@@ -1,17 +1,18 @@
 function doPost(e) {
   try {
     Logger.log("Recibiendo archivo con FormData...");
-    const folderId = "ID_DE_LA_CARPETA_DE_DRIVE";
+
+    const folderId = "18SJdEhVyGe-OljU6oy-2MtLxvzaAJlJK";
     const folder = DriveApp.getFolderById(folderId);
 
-    const blob = e.parameter.file; // Esto es un string base64 si se envió como FormData
+    const blob = e.parameter.file;
 
     if (!blob) {
       throw new Error("No se recibió ningún archivo");
     }
 
     const decoded = Utilities.base64Decode(blob);
-    const fileBlob = Utilities.newBlob(decoded, MimeType.JPEG, "foto.jpg"); // Podés ajustar el tipo y nombre
+    const fileBlob = Utilities.newBlob(decoded, MimeType.JPEG, "foto.jpg");
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = `foto-${timestamp}`;
