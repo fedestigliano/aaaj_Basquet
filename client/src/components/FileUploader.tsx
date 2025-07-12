@@ -11,11 +11,21 @@ export default function FileUploader() {
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
       try {
+        const reader = new FileReader();
+
+        const fileBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
+          reader.onload = () => resolve(reader.result as ArrayBuffer);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsArrayBuffer(file);
+        });
+
+        const blob = new Blob([fileBuffer], { type: file.type });
+
         const res = await fetch(
           "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
           {
             method: "POST",
-            body: file,
+            body: blob,
           }
         );
 
@@ -57,8 +67,8 @@ export default function FileUploader() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
-      'video/*': ['.mp4', '.mov', '.avi'],
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
+      "video/*": [".mp4", ".mov", ".avi"],
     },
   });
 
@@ -73,7 +83,11 @@ export default function FileUploader() {
       `}
     >
       <input {...getInputProps()} />
-      <Upload className={`mx-auto h-12 w-12 mb-4 ${isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"}`} />
+      <Upload
+        className={`mx-auto h-12 w-12 mb-4 ${
+          isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"
+        }`}
+      />
       {isDragActive ? (
         <p className="text-lg text-[#E31B23]">Suelta los archivos aquí</p>
       ) : (
