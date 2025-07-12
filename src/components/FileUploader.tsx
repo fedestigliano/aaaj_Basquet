@@ -1,28 +1,60 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
 
-export default function FileUploader() {
+function FileUploader() {
   const { toast } = useToast();
 
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append("file", file);
-const res = await fetch("https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec", {
-  method: "POST",
-  body: formData,
-});
-      return res.json();
+      try {
+        const reader = new FileReader();
+
+        const base64 = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            const cleanBase64 = result.split(",")[1]; // Remueve encabezado tipo data:image/jpeg;base64,
+            resolve(cleanBase64);
+          };
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(file);
+        });
+
+        const payload = {
+          file: base64,
+          type: file.type,
+          name: file.name,
+        };
+
+        const res = await fetch(
+          "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        const resultado = await res.json();
+
+        if (resultado.message) {
+          return resultado;
+        } else {
+          throw new Error(resultado.error || "Error desconocido");
+        }
+      } catch (error) {
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "¡Éxito!",
-        description: "Archivo subido correctamente",
+        description: "Archivo subido correctamente: " + data.name,
       });
     },
     onError: () => {
@@ -40,14 +72,14 @@ const res = await fetch("https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3
         uploadMutation.mutate(file);
       });
     },
-    [uploadMutation],
+    [uploadMutation]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
-      'video/*': ['.mp4', '.mov', '.avi'],
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
+      "video/*": [".mp4", ".mov", ".avi"],
     },
   });
 
@@ -62,12 +94,16 @@ const res = await fetch("https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3
       `}
     >
       <input {...getInputProps()} />
-      <Upload className={`mx-auto h-12 w-12 mb-4 ${isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"}`} />
+      <Upload
+        className={`mx-auto h-12 w-12 mb-4 ${
+          isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"
+        }`}
+      />
       {isDragActive ? (
         <p className="text-lg text-[#E31B23]">Suelta los archivos aquí</p>
       ) : (
         <p className="text-lg text-[#1B3C84]">
-          Arrastra y suelta archivos aquí, o haz clic para seleccionar
+          Arrastrá y soltá archivos aquí, o hacé clic para seleccionar
         </p>
       )}
       <p className="text-sm text-[#1B3C84]/70 mt-2">
@@ -82,3 +118,5 @@ const res = await fetch("https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3
     </div>
   );
 }
+
+export default FileUploader;
