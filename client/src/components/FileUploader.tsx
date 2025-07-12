@@ -13,19 +13,30 @@ function FileUploader() {
       try {
         const reader = new FileReader();
 
-        const fileBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
-          reader.onload = () => resolve(reader.result as ArrayBuffer);
+        const base64 = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            const cleanBase64 = result.split(",")[1]; // Remueve encabezado tipo "data:image/jpeg;base64,"
+            resolve(cleanBase64);
+          };
           reader.onerror = () => reject(reader.error);
-          reader.readAsArrayBuffer(file);
+          reader.readAsDataURL(file);
         });
 
-        const blob = new Blob([fileBuffer], { type: file.type });
+        const payload = {
+          file: base64,
+          type: file.type,
+          name: file.name,
+        };
 
         const res = await fetch(
           "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
           {
             method: "POST",
-            body: blob,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
           }
         );
 
@@ -92,7 +103,7 @@ function FileUploader() {
         <p className="text-lg text-[#E31B23]">Suelta los archivos aquí</p>
       ) : (
         <p className="text-lg text-[#1B3C84]">
-          Arrastra y suelta archivos aquí, o haz clic para seleccionar
+          Arrastrá y soltá archivos aquí, o hacé clic para seleccionar
         </p>
       )}
       <p className="text-sm text-[#1B3C84]/70 mt-2">
