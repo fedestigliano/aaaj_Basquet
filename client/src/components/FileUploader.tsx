@@ -1,3 +1,4 @@
+// Conectado con Apps Script: versión actual
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@tanstack/react-query";
