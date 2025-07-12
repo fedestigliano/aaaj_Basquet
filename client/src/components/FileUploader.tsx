@@ -1,4 +1,3 @@
-// Conectado con Apps Script: versión actual
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@tanstack/react-query";
@@ -12,21 +11,14 @@ export default function FileUploader() {
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
       try {
-        const reader = new FileReader();
-
-        const fileBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
-          reader.onload = () => resolve(reader.result as ArrayBuffer);
-          reader.onerror = () => reject(reader.error);
-          reader.readAsArrayBuffer(file);
-        });
-
-        const blob = new Blob([fileBuffer], { type: file.type });
+        const formData = new FormData();
+        formData.append("file", file);
 
         const res = await fetch(
           "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
           {
             method: "POST",
-            body: blob,
+            body: formData,
           }
         );
 
@@ -85,26 +77,4 @@ export default function FileUploader() {
     >
       <input {...getInputProps()} />
       <Upload
-        className={`mx-auto h-12 w-12 mb-4 ${
-          isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"
-        }`}
-      />
-      {isDragActive ? (
-        <p className="text-lg text-[#E31B23]">Suelta los archivos aquí</p>
-      ) : (
-        <p className="text-lg text-[#1B3C84]">
-          Arrastra y suelta archivos aquí, o haz clic para seleccionar
-        </p>
-      )}
-      <p className="text-sm text-[#1B3C84]/70 mt-2">
-        Formatos aceptados: JPG, PNG, GIF, MP4, MOV, AVI
-      </p>
-      {uploadMutation.isPending && (
-        <div className="mt-4">
-          <Progress value={33} className="h-2" />
-          <p className="text-sm text-[#1B3C84]/70 mt-2">Subiendo archivo...</p>
-        </div>
-      )}
-    </div>
-  );
-}
+        className
