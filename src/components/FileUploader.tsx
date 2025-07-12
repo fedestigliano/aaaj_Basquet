@@ -13,7 +13,10 @@ export default function FileUploader() {
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await apiRequest("POST", "/api/files", formData);
+const res = await fetch("https://script.google.com/macros/s/TU_WEB_APP_ID/exec", {
+  method: "POST",
+  body: formData,
+});
       return res.json();
     },
     onSuccess: () => {
