@@ -16,7 +16,7 @@ Aplicación web para cargar y gestionar fotografías de AAAJ Basquet, con subida
 - **Sin configuración necesaria**
 - Los archivos se almacenan temporalmente en memoria
 - Perfecto para probar la aplicación
-- Carpetas de ejemplo incluidas
+- Carpetas de ejemplo incluidas 
 
 ### ☁️ Modo Google Drive (Para producción)
 - Requiere configuración de Google Cloud
