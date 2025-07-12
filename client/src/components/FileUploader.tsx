@@ -11,14 +11,21 @@ function FileUploader() {
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
       try {
-        const formData = new FormData();
-        formData.append("file", file);
+        const reader = new FileReader();
+
+        const fileBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
+          reader.onload = () => resolve(reader.result as ArrayBuffer);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsArrayBuffer(file);
+        });
+
+        const blob = new Blob([fileBuffer], { type: file.type });
 
         const res = await fetch(
           "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
           {
             method: "POST",
-            body: formData,
+            body: blob,
           }
         );
 
@@ -101,4 +108,4 @@ function FileUploader() {
   );
 }
 
-export default FileUploader;
+export default
