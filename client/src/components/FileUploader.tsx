@@ -78,34 +78,4 @@ function FileUploader() {
       className={`
         border-2 border-dashed rounded-lg p-8 text-center cursor-pointer
         transition-colors
-        ${isDragActive ? "border-[#E31B23] bg-[#E31B23]/5" : "border-[#1B3C84]/20"}
-        ${uploadMutation.isPending ? "pointer-events-none opacity-50" : ""}
-      `}
-    >
-      <input {...getInputProps()} />
-      <Upload
-        className={`mx-auto h-12 w-12 mb-4 ${
-          isDragActive ? "text-[#E31B23]" : "text-[#1B3C84]"
-        }`}
-      />
-      {isDragActive ? (
-        <p className="text-lg text-[#E31B23]">Suelta los archivos aquí</p>
-      ) : (
-        <p className="text-lg text-[#1B3C84]">
-          Arrastra y suelta archivos aquí, o haz clic para seleccionar
-        </p>
-      )}
-      <p className="text-sm text-[#1B3C84]/70 mt-2">
-        Formatos aceptados: JPG, PNG, GIF, MP4, MOV, AVI
-      </p>
-      {uploadMutation.isPending && (
-        <div className="mt-4">
-          <Progress value={33} className="h-2" />
-          <p className="text-sm text-[#1B3C84]/70 mt-2">Subiendo archivo...</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default
+        ${isDragActive ? "border-[#E31B23] bg
