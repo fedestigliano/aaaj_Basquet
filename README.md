@@ -98,4 +98,4 @@ GOOGLE_DRIVE_FOLDER_ID=tu_id_de_carpeta_aqui
 
 ## Licencia
 
-Este proyecto es privado y para uso exclusivo de AAAJ Basquet.
+Este proyecto es privado y para uso exclusivo de AAAJ Basquet. 
