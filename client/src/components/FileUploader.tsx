@@ -30,7 +30,7 @@ function FileUploader() {
         };
 
         const res = await fetch(
-          "https://script.google.com/macros/s/AKfycbwUBdAOEUAa5iu3qR2hM3XH36XQoTQYp6DqlMArU3f8kfQFRXk7CiJv0ea845b-jNxx/exec",
+          "https://script.google.com/macros/s/AKfycbxOJ6V6UyGOUU24vrEd3H0046HsbZDGS8exM2CYR-L0QUTzIX2RtRAw4Fckmy6CH6aA/exec",
           {
             method: "POST",
             headers: {
